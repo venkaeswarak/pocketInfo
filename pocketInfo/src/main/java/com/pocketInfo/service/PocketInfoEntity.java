@@ -1,13 +1,10 @@
 package com.pocketInfo.service;
 
-import org.hibernate.annotations.Type;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,8 +30,8 @@ public class PocketInfoEntity {
 	
 	private String descreption;
 	
-	@Lob
-    @Column(name = "image_data") 
-    private byte[] imageData; 
+	//@Lob
+   // @Column(name = "image_data") 
+   // private byte[] imageData; 
 	
 }
