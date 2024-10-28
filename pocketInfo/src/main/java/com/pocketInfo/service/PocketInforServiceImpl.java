@@ -5,18 +5,40 @@ import java.util.Optional;
 import java.util.zip.DataFormatException;
 
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.pocketInfo.ImageUtils;
+import com.pocketInfo.dto.PocketInfoDTO;
 import com.pocketInfo.entity.Image;
+import com.pocketInfo.entity.PocketInfoEntity;
 import com.pocketInfo.repository.ImageRepository;
 
+@Service
 public class PocketInforServiceImpl implements PocketInfoService {
 	
 	@Autowired
 	ImageRepository imageRepository;
 	
+	@Autowired
+	PocketInfoRepository pocketInfoRepository;
+	
+	@Autowired
+	ModelMapper model;
+	
+	@Override
+	public String savePInfo(PocketInfoDTO inputDTO) {
+		
+		ModelMapper model = new ModelMapper();
+		PocketInfoEntity pocketInfoEntity = model.map(inputDTO, PocketInfoEntity.class);
+		pocketInfoRepository.save(pocketInfoEntity);
+		return "PocketInfo saved successfully.";
+	}
+	
+	
+	@Override
 	 public String uploadImage(MultipartFile imageFile) throws IOException {
 		 
 	        var imageToSave = Image.builder();
@@ -27,8 +49,10 @@ public class PocketInforServiceImpl implements PocketInfoService {
 	        imageRepository.save(imageToSave);
 	        return "file uploaded successfully : " + imageFile.getOriginalFilename();
 	    }
-
-	    public byte[] downloadImage(String imageName) {
+	
+	
+	@Override
+	public byte[] downloadImage(String imageName) {
 	        Optional<Image> dbImage = imageRepository.findByName(imageName);
 
 	        return dbImage.map(image -> {
@@ -41,5 +65,16 @@ public class PocketInforServiceImpl implements PocketInfoService {
 	            }
 	        }).orElse(null);
 	    }
+
+
+	@Override
+	public PocketInfoDTO findById(Long id) {
+		PocketInfoEntity pInfo = pocketInfoRepository.findById(id).orElse(new PocketInfoEntity());
+		//ModelMapper model = new ModelMapper();
+		PocketInfoDTO pocketInfo = model.map(pInfo, PocketInfoDTO.class);
+		return pocketInfo;
+	}
+
+		
 
 }
