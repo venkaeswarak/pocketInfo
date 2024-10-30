@@ -23,11 +23,9 @@ public class ImageService {
     private ImageRepository imageRepository;
 
     public String uploadImage(MultipartFile imageFile) throws IOException {
-        var imageToSave = Image.builder();
-        imageToSave.setName(imageFile.getOriginalFilename());
-        imageToSave.setType(imageFile.getContentType());
-        imageToSave.setImageData(ImageUtils.compressImage(imageFile.getBytes()));
-               // .build();
+        var imageToSave = Image.builder().name(imageFile.getOriginalFilename())
+        		.type(imageFile.getContentType()).imageData(ImageUtils.compressImage(imageFile.getBytes()))
+                .build();
         imageRepository.save(imageToSave);
         return "file uploaded successfully : " + imageFile.getOriginalFilename();
     }
@@ -40,7 +38,7 @@ public class ImageService {
                 return ImageUtils.decompressImage(image.getImageData());
             } catch (DataFormatException | IOException exception) {
                 throw new ContextedRuntimeException("Error downloading an image", exception)
-                        .addContextValue("Image ID",  image.getId())
+                        .addContextValue("Image ID",  image.getImgId())
                         .addContextValue("Image name", imageName);
             }
         }).orElse(null);

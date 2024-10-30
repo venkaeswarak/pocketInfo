@@ -1,10 +1,13 @@
 package com.pocketInfo.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.pocketInfo.service.ImageDTO;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Builder
 @AllArgsConstructor
@@ -19,6 +22,8 @@ public class PocketInfoDTO {
 	private String pocketCategory;
 	
 	private String descreption;
+	
+	private List<ImageDTO> images = new ArrayList<>();
 
 	public Long getPkId() {
 		return pkId;
@@ -50,6 +55,14 @@ public class PocketInfoDTO {
 
 	public void setDescreption(String descreption) {
 		this.descreption = descreption;
+	}
+
+	public List<ImageDTO> getImages() {
+		return images;
+	}
+
+	public void setImages(List<ImageDTO> images) {
+		this.images = images;
 	}
 	
 	
